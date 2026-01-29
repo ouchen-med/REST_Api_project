@@ -10,5 +10,5 @@ app.use('/api/students', studentsRoutes);
 
 
 app.listen(port, () => {
-  console.log(`🚀 Server running on http://localhost:${port}`);
+  console.log(`Server running on http://localhost:${port}`);
 });
