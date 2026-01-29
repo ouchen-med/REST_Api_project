@@ -7,8 +7,8 @@ const router = Router();
 router.get('/', controllerStudents.getStudents);
 router.get('/:id', controllerStudents.getStudentById);
 router.post('/', validationStudents(), controllerStudents.addStudent);
-router.patch('/:id', controllerStudents.updateStudent)
-
+router.patch('/:id', controllerStudents.updateStudent);
+router.delete('/:id', controllerStudents.deleteStudent);
 
 router.use((req, res) => {
   res.status(404).json({

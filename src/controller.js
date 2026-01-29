@@ -186,14 +186,55 @@ const updateStudent = (req, res) => {
     }
   });
 };
-
-const deleteStudent = (req,res) => {
+const deleteStudent = (req, res) => {
+  const id = parseInt(req.params.id);
   
-}
+  if (isNaN(id) || id <= 0) {
+    return res.status(400).json({ 
+      success: false,
+      error: 'Invalid student ID' 
+    });
+  }
+
+  pool.query(queries.getStudentsByIdQuerie, [id], (error, results) => {
+    if (error) {
+      console.error('Error fetching student by ID:', error);
+      return res.status(500).json({ 
+        success: false,
+        error: 'Failed to fetch student' 
+      });
+    }
+    
+    if (results.rows.length === 0) {
+      return res.status(404).json({ 
+        success: false,
+        error: 'Student not found' 
+      });
+    }
+    
+    pool.query(queries.deleteStudentQuery, [id], (deleteError, deleteResults) => {
+      if (deleteError) {
+        console.error('Error deleting student:', deleteError);
+        return res.status(500).json({ 
+          success: false,
+          error: 'Failed to delete student' 
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: 'Student deleted successfully!',
+        student: deleteResults.rows[0]  
+      });
+    });
+  });
+};
+
 
 module.exports = {
   getStudents,
   getStudentById,
   addStudent,
   updateStudent,
+  deleteStudent,
 };

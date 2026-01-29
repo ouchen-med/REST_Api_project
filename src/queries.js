@@ -35,6 +35,13 @@ RETURNING *;
   checkEmailExistsExcludingCurrent: `
     SELECT email FROM students WHERE email = $1 AND id != $2
   `
+    ,
+  deleteStudentQuery:
+  `DELETE FROM students
+WHERE id = $1
+RETURNING *;
+
+  `
 };
 
 module.exports = queries;
